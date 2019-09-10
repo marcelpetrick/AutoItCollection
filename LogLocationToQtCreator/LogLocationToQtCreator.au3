@@ -57,10 +57,10 @@ Func main()
    ; activate the window
 
    ;WinWaitActive("[CLASS:Qt5QWindowIcon]","", 3) ; maybe check with a RegExp?
-   Opt("WinTitleMatchMode",2)
-   WinActivate("Qt Creator")
+;   Opt("WinTitleMatchMode",2)
+;   WinActivate("Qt Creator")
 
-   logCall("found QtCreator :)")
+ ;  logCall("found QtCreator :)")
 
    ; check this for further hints_ https://autoit.de/index.php?thread/32818-udp-tutorial/
    logCall("open UDP port")
@@ -72,29 +72,28 @@ $g_IP = "127.0.0.1" ; eigene IP-Addresse
 UDPStartup() ;startet den UDP-Service
 
 
-$aSocket = UDPBind($g_IP, 65432) ; Öffnet einen Socket mit der IP $g_IP und dem Port 65432
+$aSocket = UDPBind($g_IP, 61337) ; Öffnet einen Socket mit der IP $g_IP und dem Port 65432
 ; $aSocket ist genauso aufgebaut wie das Array von UDPOpen()
 ; $aSocket[1]: real socket
 ; $aSocket[2]: IP des Servers
 ; $aSocket[3]: Port des Servers
 If @error Then Exit
 While 1
-$aData = UDPRecv($aSocket, 128, 2) ;empfängt Daten von einem Client
-;durch das Flag 2 wird folgendes Array ausgegeben:
-; $aData[0]: data
-; $aData[1]: IP des Clients
-; $aData[2]: Port des Clients
+   logCall(".. waiting ..")
 
+   $aData = UDPRecv($aSocket, 128, 2) ;empfängt Daten von einem Client
+   ;durch das Flag 2 wird folgendes Array ausgegeben:
+   ; $aData[0]: data
+   ; $aData[1]: IP des Clients
+   ; $aData[2]: Port des Clients
 
-If $aData <> "" Then ; wenn Daten empfangen werden
-MsgBox(0, "SERVER", "Daten vom Client erhalten:"&@CRLF&$aData[0]) ; Ausgabe der empfangenen Daten
-
-Local $aClientArray[4] = [$aSocket[0], $aSocket[1], $aData[1], $aData[2]]
-
-
-UDPSend($aClientarray, $aData[0]) ; Sendet die gleichen Daten zurück an den Client
-EndIf
-Sleep(100)
+   If $aData <> "" Then ; wenn Daten empfangen werden
+	  logCall(".. got something! ")
+	  MsgBox(0, "SERVER", "Daten vom Client erhalten:"&@CRLF&$aData[0]) ; Ausgabe der empfangenen Daten
+	  Local $aClientArray[4] = [$aSocket[0], $aSocket[1], $aData[1], $aData[2]]
+	  UDPSend($aClientarray, $aData[0]) ; Sendet die gleichen Daten zurück an den Client
+   EndIf
+   Sleep(100)
 WEnd
 ;---------------
 
