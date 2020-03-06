@@ -9,6 +9,7 @@
 ;includes
 #include <Date.au3>
 
+; TODO definitely needs better hotkeys, because else all upper case Y and X are captured!
 ; assign the hotkeys
 HotKeySet("+y", "main") ; go go go: Shift+Y
 HotKeySet("+x", "togglePause") ; freeze! : Shift+X
